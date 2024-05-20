@@ -95,6 +95,11 @@ const playSong=(id)=>{
   audio.play();
   }
 };
+const pauseSong=()=>{
+audio.currentTime=userData?.songCurrentTime;
+playButton.classList.remove("playing");
+audio.pause();
+};
 const renderSongs=(array)=>{
   const songsHTML=array.map((song)=>{
     return `
@@ -113,6 +118,9 @@ const renderSongs=(array)=>{
   }).join("");
   playlistSongs.innerHTML = songsHTML;
 };
+const getCurrentSongIndex=()=>{
+
+};
 playButton.addEventListener('click',()=> {
   if(!userData?.currentSong){
     playSong(userData?.songs[0].id);
@@ -121,6 +129,7 @@ playButton.addEventListener('click',()=> {
     playSong(userData?.currentSong.id)
   }
   });
+  pauseButton.addEventListener("click", pauseSong);
 const sortSongs=()=>{
   userData?.songs.sort((a,b)=>{
     if(a.title< b.title){
