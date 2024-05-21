@@ -94,9 +94,9 @@ const playSong=(id)=>{
     userData.currentSong=song;
     playButton.classList.add("playing");
     highlightCurrentSong();
+    setPlayerDisplay();
+    setPlayButtonAccessibleText();
   audio.play();
-  
-  
 };
 const pauseSong=()=>{
 audio.currentTime=userData?.songCurrentTime;
@@ -121,22 +121,33 @@ const previousSong=userData?.songs[currentSongIndex - 1];
 playSong(previousSong.id);
 }
 };
-const highlightCurrentSong=()=>{
-  const playListElement=document.querySelector("playlist-song");
-  const songToHighlight=document.getElementById(`song-${userData?.currentSong?.id}`
+const setPlayerDisplay = () => {
+  const playingSong = document.getElementById("player-song-title");
+  const songArtist = document.getElementById("player-song-artist");
+  const currentTitle = userData?.currentSong?.title;
+  const currentArtist = userData?.currentSong?.artist;
+
+  playingSong.textContent = currentTitle ? currentTitle : "";
+  songArtist.textContent = currentArtist ? currentArtist : "";
+};
+
+const highlightCurrentSong = () => {
+  const playlistSongElements = document.querySelectorAll(".playlist-song");
+  const songToHighlight = document.getElementById(
+    `song-${userData?.currentSong?.id}`
   );
-  playlistSongElement.array.forEach((songEl) => {
+
+  playlistSongElements.forEach((songEl) => {
     songEl.removeAttribute("aria-current");
   });
-  if(songToHighlight)songToHighlight.setAttribute("aria-current", "true");
+
+  if (songToHighlight) songToHighlight.setAttribute("aria-current", "true");
 };
-const setPlayerDisplay=()=>{
-const playingSong=document.getElementById("player-song-title");
-const songArtist=document.getElementById("player-song-artist");
-const currentTitle=userData?.currentSong?.title;
-const currentArtist=userData?.currentSong?.artist;
-playingSong.textContent = currentTitle ? currentTitle : "";
-  songArtist.textContent = currentArtist ? currentArtist : "";
+
+const setPlayButtonAccessibleText=()=>{
+const song=userData?.currentSong||userData?.song[0];
+playButton.setAttribute("arial-label" ,song?.title ? Play `${song.title}` :"play");
+
 };
 const renderSongs=(array)=>{
   const songsHTML=array.map((song)=>{
@@ -156,11 +167,10 @@ const renderSongs=(array)=>{
   }).join("");
   playlistSongs.innerHTML = songsHTML;
 };
-const getCurrentSongIndex=()=>{
-return userData?.songs.indexOf(userData?.currentSong);
-};
+const getCurrentSongIndex=()=>userData?.songs.indexOf(userData?.currentSong);
+
 playButton.addEventListener('click',()=> {
-  if(!userData?.currentSong){
+  if(!userData?.currentSong===null){
     playSong(userData?.songs[0].id);
   }
   else{
