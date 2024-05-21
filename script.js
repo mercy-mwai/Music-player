@@ -4,6 +4,7 @@ const pauseButton=document.getElementById('pause');
 const nextButton=document.getElementById('next');
 const previousButton=document.getElementById('previous');
 const shuffleButton=document.getElementById('shuffle');
+const ResetPlaylistButton=document.getElementById('delete');
 let allSongs=[
     {id: 0,
     title: "Scratching The Surface",
@@ -136,6 +137,20 @@ const shuffle = () => {
   pauseSong();
   setPlayerDisplay();
   setPlayButtonAccessibleText();
+};
+
+const deleteSong=(id)=>{
+  if(userData?.currentSong?.id===id){
+userData.currentSong=null;
+userData.songCurrentTime=0;
+pauseSong();
+setPlayerDisplay();
+  }
+userData.songs=userData?.songs.filter((song)=>song.id !==id);
+
+renderSongs(userData?.songs);
+highlightCurrentSong();
+setPlayButtonAccessibleText();
 };
 const setPlayerDisplay = () => {
   const playingSong = document.getElementById("player-song-title");
