@@ -156,6 +156,15 @@ if(userData?.songs===0){
   const resetText=document.createTextNode("Reset Playlist");
   resetButton.id="reset";
   resetButton.arialabel="Reset playlist";
+  resetButton.appendChild(resetText);
+  playlistSongs.appendChild(resetButton);
+  resetButton.addEventListener("click",()=>{
+    userData.songs = [...allSongs];
+
+    renderSongs(sortSongs());
+    setPlayButtonAccessibleText();
+    resetButton=remove();
+  });
 }
 };
 const setPlayerDisplay = () => {
@@ -230,6 +239,9 @@ previousButton.addEventListener("click", playPreviousSong);
 
 shuffleButton.addEventListener("click", shuffle);
 
+audio.addEventListener("ended",()=>{
+
+});
 const sortSongs = () => {
   userData?.songs.sort((a,b) => {
     if (a.title < b.title) {
